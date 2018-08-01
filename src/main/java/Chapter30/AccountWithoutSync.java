@@ -25,7 +25,9 @@ public class AccountWithoutSync {
 
 		@Override
 		public void run() {
-			account.deposit(1);
+			synchronized (account){
+				account.deposit(1);
+			}
 		}
 	}
 
@@ -36,7 +38,7 @@ public class AccountWithoutSync {
 			return balance;
 		}
 
-		synchronized public void deposit(int amount){
+		public void deposit(int amount){
 			int newBalance = balance + amount;
 			try{
 				Thread.sleep(5);
