@@ -4,7 +4,7 @@ package Chapter30;
  * Created by Wilbur Hsu on 2017/11/6.
  * TaskThreadDemo
  */
-public class Code30_1 {
+public class TaskThreadDemo {
     public static void main(String[] args) {
         //创建任务
         Runnable printA = new PrintChar('a',100);
@@ -31,7 +31,7 @@ class PrintChar implements Runnable{
         times = t;
     }
 
-    @Override
+    //@Override
     public void run(){
         for (int i=0; i<times; i++){
             System.out.print(charToPrint);
@@ -46,7 +46,7 @@ class PrintNum implements Runnable{
         lastNum = n;
     }
 
-    @Override
+    //@Override
     public void run(){
         for(int i=1; i<=lastNum; i++){
             System.out.print(" " + i);
