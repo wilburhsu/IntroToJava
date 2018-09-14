@@ -2,8 +2,10 @@ package Chapter30;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-public class AccountWithoutSync {
+public class AccountWithSyncUsingLock {
 	private static Account account = new Account();
 
 	public static void main(String[] args) {
@@ -22,16 +24,14 @@ public class AccountWithoutSync {
 	}
 
 	private static class AddAPennyTash implements Runnable{
-
-		//@Override
+		@Override
 		public void run() {
-			synchronized (account){
 				account.deposit(1);
-			}
 		}
 	}
 
 	private static class Account{
+		private static Lock lock = new ReentrantLock();
 		private int balance = 0;
 
 		public int getBalance(){
@@ -39,13 +39,18 @@ public class AccountWithoutSync {
 		}
 
 		public void deposit(int amount){
-			int newBalance = balance + amount;
+			lock.lock();
+
 			try{
+				int newBalance = balance + amount;
 				Thread.sleep(5);
+				balance = newBalance;
 			}catch (InterruptedException ex){
 				ex.printStackTrace();
+			}finally {
+				lock.unlock();
 			}
-			balance = newBalance;
+
 		}
 	}
 }
